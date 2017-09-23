@@ -1,29 +1,52 @@
 from chalice import Chalice
+import boto3
+
+app = Chalice(app_name='helloworld')
+
+# Get the service resource.
+dynamodb = boto3.resource('dynamodb')
+
+# Instantiate a table resource object without actually
+# creating a DynamoDB table. Note that the attributes of this table
+# are lazy-loaded: a request is not made nor are the attribute
+# values populated until the attributes
+# on the table resource are accessed or its load() method is called.
+
+table = dynamodb.Table('UserRegistration')
 
 app = Chalice(app_name='aiot-api-registration')
 
 
-@app.route('/')
+@app.route('/users')
 def index():
-    return {'hello': 'world'}
+    response = table.scan()
+    items = response['Items']
+    return items
 
 
-# The view function above will return {"hello": "world"}
-# whenever you make an HTTP GET request to '/'.
-#
-# Here are a few more examples:
-#
-# @app.route('/hello/{name}')
-# def hello_name(name):
-#    # '/hello/james' -> {"hello": "james"}
-#    return {'hello': name}
-#
-# @app.route('/users', methods=['POST'])
-# def create_user():
-#     # This is the JSON body the user sent in their POST request.
-#     user_as_json = app.current_request.json_body
-#     # We'll echo the json body back to the user in a 'user' key.
-#     return {'user': user_as_json}
-#
-# See the README documentation for more examples.
-#
+@app.route('/users/{deviceId}')
+def get_by_id(deviceId):
+    key = {'DeviceId': int(deviceId)}
+    response = table.get_item(Key=key)
+    item = response['Item']
+    return item
+
+
+@app.route('/users/create', methods=['POST'])
+def put():
+    try:
+        user = app.current_request.json_body
+        table.put_item(Item=user)
+        return True
+    except:
+        return False
+
+
+@app.route('/users/delete/{deviceId}', methods=['DELETE'])
+def delete(deviceId):
+    key = {'DeviceId': int(deviceId)}
+    try:
+        table.delete_item(Key=key)
+        return True
+    except:
+        return False
