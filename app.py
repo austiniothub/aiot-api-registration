@@ -1,7 +1,7 @@
 from chalice import Chalice
 import boto3
 
-app = Chalice(app_name='helloworld')
+app = Chalice(app_name='aiot-api-registration')
 
 # Get the service resource.
 dynamodb = boto3.resource('dynamodb')
@@ -12,7 +12,7 @@ dynamodb = boto3.resource('dynamodb')
 # values populated until the attributes
 # on the table resource are accessed or its load() method is called.
 
-table = dynamodb.Table('UserRegistration')
+table = dynamodb.Table('UsersRegistration')
 
 app = Chalice(app_name='aiot-api-registration')
 
@@ -24,9 +24,9 @@ def index():
     return items
 
 
-@app.route('/users/{deviceId}')
-def get_by_id(deviceId):
-    key = {'DeviceId': int(deviceId)}
+@app.route('/users/{email}')
+def get_by_id(email):
+    key = {'Email': email}
     response = table.get_item(Key=key)
     item = response['Item']
     return item
@@ -34,17 +34,17 @@ def get_by_id(deviceId):
 
 @app.route('/users/create', methods=['POST'])
 def put():
+    user = app.current_request.json_body
     try:
-        user = app.current_request.json_body
         table.put_item(Item=user)
         return True
     except:
         return False
 
 
-@app.route('/users/delete/{deviceId}', methods=['DELETE'])
-def delete(deviceId):
-    key = {'DeviceId': int(deviceId)}
+@app.route('/users/delete/{email}', methods=['DELETE'])
+def delete(email):
+    key = {'Email': email}
     try:
         table.delete_item(Key=key)
         return True

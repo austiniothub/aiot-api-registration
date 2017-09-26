@@ -1,12 +1,12 @@
 {
   "dev": {
     "api_handler_name": "aiot-api-registration-dev",
-    "api_handler_arn": "arn:aws:lambda:us-east-2:597248753215:function:aiot-api-registration-dev",
+    "api_handler_arn": "arn:aws:lambda:us-east-1:597248753215:function:aiot-api-registration-dev",
     "lambda_functions": {},
     "backend": "api",
     "chalice_version": "1.0.2",
-    "rest_api_id": "nk4dht88sa",
+    "rest_api_id": "8w8irufy85",
     "api_gateway_stage": "api",
-    "region": "us-east-2"
+    "region": "us-east-1"
   }
 }

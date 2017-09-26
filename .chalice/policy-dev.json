@@ -18,7 +18,7 @@
         "dynamodb:PutItem",
         "dynamodb:Scan"
       ],
-      "Resource": "arn:aws:dynamodb:us-east-2:597248753215:table/UserRegistration"
+      "Resource": "arn:aws:dynamodb:us-east-1:597248753215:table/UsersRegistration"
     }
   ]
 }
