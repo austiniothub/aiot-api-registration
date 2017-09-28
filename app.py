@@ -33,10 +33,20 @@ def get_by_id(email):
 
 
 @app.route('/users/create', methods=['POST'])
-def put():
+def post():
     user = app.current_request.json_body
     try:
         table.put_item(Item=user)
+        return True
+    except:
+        return False
+
+
+@app.route('/users/update', methods=['PUT'])
+def put():
+    user = app.current_request.json_body
+    try:
+        table.update_item(Item=user)
         return True
     except:
         return False

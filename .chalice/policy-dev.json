@@ -16,7 +16,8 @@
         "dynamodb:DeleteItem",
         "dynamodb:GetItem",
         "dynamodb:PutItem",
-        "dynamodb:Scan"
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
       ],
       "Resource": "arn:aws:dynamodb:us-east-1:597248753215:table/UsersRegistration"
     }
